@@ -1,29 +1,32 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "betteraddserver",
   "version": "${version}",
 
-  "name": "Example Mod",
+  "name": "Better Add Server",
   "description": "This is an example description! Tell everyone what your mod is about!",
   "authors": [
-    "Me!"
+    "Player005"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
 
-  "license": "CC0-1.0",
+  "license": "LGPL",
   "icon": "assets/modid/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "net.player005.betteraddserver.BetterAddServer"
+    ],
+    "client": [
+      "net.player005.betteraddserver.BetterAddServerClient"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "betteraddserver.mixins.json"
   ],
 
   "depends": {
@@ -33,6 +36,6 @@
     "java": ">=17"
   },
   "suggests": {
-    "another-mod": "*"
+    "modmenu": "*"
   }
 }
