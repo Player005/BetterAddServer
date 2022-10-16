@@ -6,7 +6,8 @@
   "mixins": [
   ],
   "client": [
-    "menu.MixinMultiplayerMenu"
+    "menu.MixinMultiplayerMenu",
+    "screen.MixinAddServerScreen"
   ],
   "injectors": {
     "defaultRequire": 1

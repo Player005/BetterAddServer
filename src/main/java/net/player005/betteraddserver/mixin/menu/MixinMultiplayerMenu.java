@@ -21,7 +21,7 @@ public class MixinMultiplayerMenu extends Screen {
     private void init(CallbackInfo info) {
 
 
-        this.addDrawableChild(new ButtonWidget(25, 6, 100, 20, Text.translatable("selectServer.add"), button -> {
+        this.addDrawableChild(new ButtonWidget(200, 6, 100, 20, Text.translatable("selectServer.add"), button -> {
             MinecraftClient.getInstance().setScreen(new BetterAddServerScreen(this));
         }));
 
