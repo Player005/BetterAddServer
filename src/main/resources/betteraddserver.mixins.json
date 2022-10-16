@@ -6,8 +6,7 @@
   "mixins": [
   ],
   "client": [
-    "menu.MixinMultiplayerMenu",
-    "ExampleMixin"
+    "menu.MixinMultiplayerMenu"
   ],
   "injectors": {
     "defaultRequire": 1
