@@ -9,12 +9,12 @@ import net.minecraft.text.Text;
 
 import java.io.File;
 
-public class SkinScreen extends Screen {
+public class BetterAddServerScreen extends Screen {
     public final Screen parent;
     final File folder;
     public String error;
 
-    public SkinScreen(Screen scr) {
+    public BetterAddServerScreen(Screen scr) {
         super(Text.translatable("skin.change_skin"));
         this.parent = scr;
         this.folder = new File("skins");

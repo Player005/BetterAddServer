@@ -5,7 +5,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
-import net.player005.betteraddserver.gui.SkinScreen.SkinScreen;
+import net.player005.betteraddserver.gui.SkinScreen.BetterAddServerScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,8 +21,8 @@ public class MixinMultiplayerMenu extends Screen {
     private void init(CallbackInfo info) {
 
 
-        this.addDrawableChild(new ButtonWidget(25, 6, 100, 20, Text.translatable("skin.change_skin"), button -> {
-            MinecraftClient.getInstance().setScreen(new SkinScreen(this));
+        this.addDrawableChild(new ButtonWidget(25, 6, 100, 20, Text.translatable("selectServer.add"), button -> {
+            MinecraftClient.getInstance().setScreen(new BetterAddServerScreen(this));
         }));
 
     }
