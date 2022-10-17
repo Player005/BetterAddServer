@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Objects;
+
 @Mixin(AddServerScreen.class)
 public abstract class MixinAddServerScreen extends Screen {
     public TextFieldWidget serverNameField;
@@ -20,30 +22,38 @@ public abstract class MixinAddServerScreen extends Screen {
         super(title);
     }
 
-    @Inject(method = "tick",at = @At("TAIL"))
-    public void tick(CallbackInfo info){
-        if(this.addressField.isActive()) {
-            this.serverNameField.setText(IP2Name.IP2Name(this.addressField.getText()));
+    @Inject(method = "tick", at = @At("TAIL"))
+    public void tick(CallbackInfo info) {
+        if (this.addressField.isActive()) {
+            this.serverNameField.setText(IP2Name.toName(this.addressField.getText()));
+        }
+        if (this.serverNameField.isFocused()) {
+            this.addressField.setTextFieldFocused(false);
         }
     }
 
     @Inject(method = "init", at = @At("RETURN"))
-    public void init(CallbackInfo info){
+    public void init(CallbackInfo info) {
         int adrX = this.addressField.x;
         int adrY = this.addressField.y;
         int nameX = this.serverNameField.x;
         int nameY = this.serverNameField.y;
 
-        //swap position of addressField and nameField and the labels
+        //swap position of addressField and nameField
         this.addressField.x = nameX;
         this.addressField.y = nameY;
         this.serverNameField.x = adrX;
         this.serverNameField.y = adrY;
 
+        if (Objects.equals(this.serverNameField.getText(), "Minecraft-Server")) {
+            this.serverNameField.setText("");
+        }
+        this.serverNameField.setTextFieldFocused(false);
+        this.setInitialFocus(this.addressField);
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta){
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices);
         AddServerScreen.drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 17, 0xFFFFFF);
         AddServerScreen.drawTextWithShadow(matrices, this.textRenderer, Text.translatable("addServer.enterName"), this.width / 2 - 100, 94, 0xA0A0A0);
