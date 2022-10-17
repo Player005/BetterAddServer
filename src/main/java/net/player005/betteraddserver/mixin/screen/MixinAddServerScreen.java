@@ -3,6 +3,7 @@ package net.player005.betteraddserver.mixin.screen;
 import net.minecraft.client.gui.screen.AddServerScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.player005.betteraddserver.IP2Name;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,7 +40,17 @@ public abstract class MixinAddServerScreen extends Screen {
         this.serverNameField.x = adrX;
         this.serverNameField.y = adrY;
 
-        this.addressField.setTextFieldFocused(true);
-        this.addressField.active = true;
     }
+
+    @Override
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta){
+        this.renderBackground(matrices);
+        AddServerScreen.drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 17, 0xFFFFFF);
+        AddServerScreen.drawTextWithShadow(matrices, this.textRenderer, Text.translatable("addServer.enterName"), this.width / 2 - 100, 94, 0xA0A0A0);
+        AddServerScreen.drawTextWithShadow(matrices, this.textRenderer, Text.translatable("addServer.enterIp"), this.width / 2 - 100, 53, 0xA0A0A0);
+        this.serverNameField.render(matrices, mouseX, mouseY, delta);
+        this.addressField.render(matrices, mouseX, mouseY, delta);
+        super.render(matrices, mouseX, mouseY, delta);
+    }
+
 }
