@@ -16,17 +16,10 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-      - name: Cache Brachyura directory
-        uses: actions/cache@v2
-        with:
-          path: |
-            .brachyura
-            ~/.brachyura
-          key: ${{ runner.os }}-brachyura-${{ hashFiles('**/Buildscript.java') }}
-          restore-keys: ${{ runner.os }}-brachyura
-
-      - name: Build with Brachyura
-        run: java -Diris.release=true -jar brachyura-bootstrap-0.jar build
+      - name: make gradle wrapper executable
+        run: chmod +x ./gradlew
+      - name: build
+        run: ./gradlew build
 
       - name: Upload artifacts to Modrinth, Curseforge and GitHub
         uses: Kir-Antipov/mc-publish@v3.2
