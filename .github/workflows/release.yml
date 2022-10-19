@@ -36,8 +36,8 @@ jobs:
           modrinth-featured: true
           modrinth-unfeature-mode: subset
 
-          //curseforge-id: -
-          //curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          #curseforge-id: 
+          #curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
