@@ -10,5 +10,6 @@ public class BetterAddServer implements ModInitializer {
 
     @Override
     public void onInitialize() {
+
     }
 }

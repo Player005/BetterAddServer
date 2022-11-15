@@ -5,8 +5,11 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import net.player005.betteraddserver.BetterAddServer;
 import net.player005.betteraddserver.IP2Name;
+import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -17,6 +20,7 @@ import java.util.Objects;
 public abstract class MixinAddServerScreen extends Screen {
     public TextFieldWidget serverNameField;
     public TextFieldWidget addressField;
+    @Shadow private void addAndClose(){}
 
     public MixinAddServerScreen(Text title) {
         super(title);
@@ -30,6 +34,19 @@ public abstract class MixinAddServerScreen extends Screen {
         if (this.serverNameField.isFocused()) {
             this.addressField.setTextFieldFocused(false);
         }
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (keyCode == GLFW.GLFW_KEY_ENTER) {
+            BetterAddServer.LOGGER.info("ENTER");
+
+            if (!Objects.equals(this.addressField.getText(), "") & !Objects.equals(this.serverNameField.getText(), "")) {
+                this.addAndClose();
+            }
+            return false;
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     @Inject(method = "init", at = @At("RETURN"))
@@ -62,5 +79,4 @@ public abstract class MixinAddServerScreen extends Screen {
         this.addressField.render(matrices, mouseX, mouseY, delta);
         super.render(matrices, mouseX, mouseY, delta);
     }
-
 }
