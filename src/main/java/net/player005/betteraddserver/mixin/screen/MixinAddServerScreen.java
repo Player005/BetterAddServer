@@ -51,16 +51,16 @@ public abstract class MixinAddServerScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     public void init(CallbackInfo info) {
-        int adrX = this.addressField.x;
-        int adrY = this.addressField.y;
-        int nameX = this.serverNameField.x;
-        int nameY = this.serverNameField.y;
+        int adrX = this.addressField.getX();
+        int adrY = this.addressField.getY();
+        int nameX = this.serverNameField.getX();
+        int nameY = this.serverNameField.getY();
 
         //swap position of addressField and nameField
-        this.addressField.x = nameX;
-        this.addressField.y = nameY;
-        this.serverNameField.x = adrX;
-        this.serverNameField.y = adrY;
+        this.addressField.setX(nameX);
+        this.addressField.setY(nameY);
+        this.serverNameField.setX(adrX);
+        this.serverNameField.setY(adrY);
 
         if (Objects.equals(this.serverNameField.getText(), "Minecraft-Server")) {
             this.serverNameField.setText("");
