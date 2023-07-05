@@ -33,10 +33,22 @@ public abstract class MixinAddServerScreen extends Screen {
         addressField.setY(serverNameField.getY());
         serverNameField.setX(addrXOld);
         serverNameField.setY(addrYOld);
+
+        //set listeners to add suggestions if fields are empty
         addressField.setChangedListener(s -> {
             String name = IP2Name.toName(s);
             if (name != null) serverNameField.setText(name);
+
+            if (!addressField.getText().isEmpty()) addressField.setSuggestion("");
+                else addressField.setSuggestion("hypixel.net");
         });
+        serverNameField.setChangedListener(s -> {
+            if (!serverNameField.getText().isEmpty()) serverNameField.setSuggestion("");
+                else serverNameField.setSuggestion("Hypixel");
+        });
+
+        addressField.setSuggestion("hypixel.net");
+        serverNameField.setText("");
 
         this.setInitialFocus(addressField);
     }
