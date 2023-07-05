@@ -46,6 +46,7 @@ public abstract class MixinAddServerScreen extends Screen {
 
         //set listeners to add suggestions if fields are empty
         addressField.setChangedListener(s -> {
+            serverNameField.setText("");
             serverNameField.setText(IP2Name.toName(s));
             this.updateAddButton();
             updateFieldSuggestions();
