@@ -18,7 +18,6 @@
 
   "environment": "*",
   "entrypoints": {
-
     "client": [
       "net.player005.betteraddserver.BetterAddServerClient"
     ]

@@ -5,19 +5,20 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 import net.player005.betteraddserver.IP2Name;
+import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(AddServerScreen.class)
-public class MixinAddServerScreen extends Screen {
+public abstract class MixinAddServerScreen extends Screen {
 
     @Shadow private TextFieldWidget serverNameField;
-
     @Shadow private TextFieldWidget addressField;
+    @Shadow protected abstract void addAndClose();
 
     protected MixinAddServerScreen(Text title) {
         super(title);
@@ -25,12 +26,14 @@ public class MixinAddServerScreen extends Screen {
 
     @Inject(method = "init", at = @At("TAIL"))
     public void init(CallbackInfo ci) {
+        //swap fields
         int addrXOld = addressField.getX();
         int addrYOld = addressField.getY();
         addressField.setX(serverNameField.getX());
         addressField.setY(serverNameField.getY());
         serverNameField.setX(addrXOld);
         serverNameField.setY(addrYOld);
+
         this.setInitialFocus(addressField);
     }
 
@@ -39,5 +42,18 @@ public class MixinAddServerScreen extends Screen {
         if (IP2Name.toName(addressField.getText()) != null) {
             serverNameField.setText(IP2Name.toName(addressField.getText()));
         }
+    }
+
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if(keyCode == GLFW.GLFW_KEY_ENTER) {
+            this.addAndClose();
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/AddServerScreen;drawTextWithShadow(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;III)V"), index = 4)
+    private int injectedY(int Y) {
+        if (Y <= 53) return 94;
+        else return 53;
     }
 }

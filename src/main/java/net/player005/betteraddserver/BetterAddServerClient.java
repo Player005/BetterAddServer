@@ -7,4 +7,6 @@ public class BetterAddServerClient implements ClientModInitializer {
     public void onInitializeClient() {
 
     }
+
+
 }
