@@ -33,15 +33,12 @@ public abstract class MixinAddServerScreen extends Screen {
         addressField.setY(serverNameField.getY());
         serverNameField.setX(addrXOld);
         serverNameField.setY(addrYOld);
+        addressField.setChangedListener(s -> {
+            String name = IP2Name.toName(s);
+            if (name != null) serverNameField.setText(name);
+        });
 
         this.setInitialFocus(addressField);
-    }
-
-    @Inject(method = "tick", at = @At("TAIL"))
-    public void tick(CallbackInfo ci) {
-        if (IP2Name.toName(addressField.getText()) != null) {
-            serverNameField.setText(IP2Name.toName(addressField.getText()));
-        }
     }
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
