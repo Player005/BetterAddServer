@@ -48,14 +48,11 @@ public abstract class MixinAddServerScreen extends Screen {
         addressField.setChangedListener(s -> {
             serverNameField.setText(IP2Name.toName(s));
             this.updateAddButton();
-
-            if (!addressField.getText().isEmpty()) addressField.setSuggestion("");
-            else addressField.setSuggestion("hypixel.net");
+            updateFieldSuggestions();
         });
         serverNameField.setChangedListener(s -> {
             this.updateAddButton();
-            if (!serverNameField.getText().isEmpty()) serverNameField.setSuggestion("");
-            else serverNameField.setSuggestion("Hypixel");
+            updateFieldSuggestions();
         });
 
         addressField.setSuggestion("hypixel.net");
@@ -71,9 +68,20 @@ public abstract class MixinAddServerScreen extends Screen {
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/AddServerScreen;drawTextWithShadow(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;III)V"), index = 4)
+    private void updateFieldSuggestions() {
+        if (serverNameField.getText().isEmpty() & addressField.getText().isEmpty()) {
+            serverNameField.setSuggestion("Hypixel");
+            addressField.setSuggestion("hypixel.net");
+        } else {
+            serverNameField.setSuggestion("");
+            addressField.setSuggestion("");
+        }
+    }
+
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithShadow(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;III)I"), index = 3)
     private int injectedY(int Y) {
         if (Y <= 53) return 94;
         else return 53;
     }
+
 }
