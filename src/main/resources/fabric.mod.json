@@ -14,13 +14,11 @@
   },
 
   "license": "LGPL",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/betteraddserver/icon.png",
 
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "net.player005.betteraddserver.BetterAddServer"
-    ],
+
     "client": [
       "net.player005.betteraddserver.BetterAddServerClient"
     ]

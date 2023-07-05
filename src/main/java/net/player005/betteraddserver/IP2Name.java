@@ -1,13 +1,14 @@
 package net.player005.betteraddserver;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class IP2Name {
+public class IP2Name {
 
     public static List<String> upperCase = Arrays.asList("hd", "yt", "eu", "na", "sa", "as");
-    public static List<String> dontIgnoreDomainEnding = List.of();
+    public static List<String> dontIgnoreDomainEnding = new ArrayList<>();
 
     public static String toName(String IP) {
         String IPNoDots = IP.replace(".", "");
