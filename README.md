@@ -3,7 +3,7 @@ Minecraft Fabric 1.19 mod with some small quality-of-life-enhancements for the "
 
 
 ## Features
- - swap server name and server IP fields (craziest feature ever, I know)
+ - swap server name and server IP fields
  - automagically fill in server name
  - make server IP field properly focused upon open
  - save on enter
