@@ -1,14 +1,12 @@
 package net.player005.betteraddserver;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class IP2Name {
 
-    public static List<String> upperCase = Arrays.asList("hd", "yt", "eu", "na", "sa", "as");
-    public static List<String> dontIgnoreDomainEnding = new ArrayList<>();
+    public static List<String> upperCaseWords = Arrays.asList("hd", "yt", "eu", "na", "sa", "as", "pvp", "mc");
+    public static List<String> dontIgnoreDomainEnding = Arrays.asList("Land", "Club");
 
     public static String toName(String IP) {
         String IPNoDots = IP.replace(".", "");
@@ -27,7 +25,7 @@ public class IP2Name {
             int i = 0;
             for (String word : arr) {
 
-                for (String s : upperCase) {
+                for (String s : upperCaseWords) {
                     word = word.replaceAll(s, s.toUpperCase());
                 }
 
@@ -41,14 +39,12 @@ public class IP2Name {
             //remove domain ending if existing unless present in dontIgnoreDomainEnding
             String[] newArr = new String[0];
             if (arr.length > 1) {
-                if (!dontIgnoreDomainEnding.contains(arr[arr.length - 1])) {
-                    newArr = Arrays.copyOf(arr, arr.length - 1);
-                }
+                newArr = Arrays.copyOf(arr, arr.length - 1);
             }
 
             String result = String.join(" ", newArr);
-            if (Objects.equals(arr[arr.length - 1], "Land")) {
-                result = result.concat("Land");
+            if (dontIgnoreDomainEnding.contains(arr[arr.length - 1])) {
+                result = result.concat(arr[arr.length - 1]);
             }
             return result;
         }

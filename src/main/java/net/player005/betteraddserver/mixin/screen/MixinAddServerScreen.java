@@ -2,6 +2,7 @@ package net.player005.betteraddserver.mixin.screen;
 
 import net.minecraft.client.gui.screen.AddServerScreen;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 import net.player005.betteraddserver.IP2Name;
@@ -16,13 +17,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(AddServerScreen.class)
 public abstract class MixinAddServerScreen extends Screen {
 
-    @Shadow private TextFieldWidget serverNameField;
-    @Shadow private TextFieldWidget addressField;
-    @Shadow protected abstract void addAndClose();
+    @Shadow
+    private TextFieldWidget serverNameField;
+    @Shadow
+    private TextFieldWidget addressField;
+    @Shadow
+    private ButtonWidget addButton;
 
     protected MixinAddServerScreen(Text title) {
         super(title);
     }
+
+    @Shadow
+    protected abstract void addAndClose();
+
+    @Shadow
+    protected abstract void updateAddButton();
 
     @Inject(method = "init", at = @At("TAIL"))
     public void init(CallbackInfo ci) {
@@ -36,15 +46,16 @@ public abstract class MixinAddServerScreen extends Screen {
 
         //set listeners to add suggestions if fields are empty
         addressField.setChangedListener(s -> {
-            String name = IP2Name.toName(s);
-            if (name != null) serverNameField.setText(name);
+            serverNameField.setText(IP2Name.toName(s));
+            this.updateAddButton();
 
             if (!addressField.getText().isEmpty()) addressField.setSuggestion("");
-                else addressField.setSuggestion("hypixel.net");
+            else addressField.setSuggestion("hypixel.net");
         });
         serverNameField.setChangedListener(s -> {
+            this.updateAddButton();
             if (!serverNameField.getText().isEmpty()) serverNameField.setSuggestion("");
-                else serverNameField.setSuggestion("Hypixel");
+            else serverNameField.setSuggestion("Hypixel");
         });
 
         addressField.setSuggestion("hypixel.net");
@@ -54,7 +65,7 @@ public abstract class MixinAddServerScreen extends Screen {
     }
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if(keyCode == GLFW.GLFW_KEY_ENTER) {
+        if (keyCode == GLFW.GLFW_KEY_ENTER & this.addButton.active) {
             this.addAndClose();
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
