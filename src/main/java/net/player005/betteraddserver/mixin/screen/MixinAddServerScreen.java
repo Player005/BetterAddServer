@@ -9,6 +9,7 @@ import net.player005.betteraddserver.IP2Name;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -56,8 +57,10 @@ public abstract class MixinAddServerScreen extends Screen {
             updateFieldSuggestions();
         });
 
-        addressField.setSuggestion("hypixel.net");
-        serverNameField.setText("");
+        if (addressField.getText().isEmpty()) {
+            addressField.setSuggestion("hypixel.net");
+            serverNameField.setText("");
+        }
 
         this.setInitialFocus(addressField);
     }
@@ -69,6 +72,7 @@ public abstract class MixinAddServerScreen extends Screen {
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
+    @Unique
     private void updateFieldSuggestions() {
         if (serverNameField.getText().isEmpty() & addressField.getText().isEmpty()) {
             serverNameField.setSuggestion("Hypixel");
