@@ -59,8 +59,10 @@ public abstract class MixinAddServerScreen extends Screen {
             else serverNameField.setSuggestion("Hypixel");
         });
 
-        addressField.setSuggestion("hypixel.net");
-        serverNameField.setText("");
+        if (addressField.getText().isEmpty()) {
+            addressField.setSuggestion("hypixel.net");
+            serverNameField.setText("");
+        }
 
         this.setInitialFocus(addressField);
     }
