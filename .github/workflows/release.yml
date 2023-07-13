@@ -10,10 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up JDK 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
+          cache: 'gradle'
           distribution: 'temurin'
           java-version: 17
       - name: make gradle wrapper executable
@@ -21,7 +22,7 @@ jobs:
       - name: build
         run: ./gradlew build
 
-      - name: Upload artifacts to Modrinth, Curseforge and GitHub
+      - name: Upload artifacts to Modrinth and GitHub
         uses: Kir-Antipov/mc-publish@v3.2
         with:
           modrinth-id: s4DtR8IM
@@ -33,13 +34,7 @@ jobs:
           #curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
           files: build/libs/!(*-@(dev|sources|all)).jar
-
           version-type: release
-
           loaders: fabric quilt
-
-          dependencies: sodium | depends | *
-
           version-resolver: latest
