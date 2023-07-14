@@ -37,12 +37,13 @@ public abstract class MixinAddServerScreen extends Screen {
     @Inject(method = "init", at = @At("TAIL"))
     public void init(CallbackInfo ci) {
         //swap fields
-        int addrXOld = addressField.getX();
-        int addrYOld = addressField.getY();
-        addressField.setX(serverNameField.getX());
-        addressField.setY(serverNameField.getY());
-        serverNameField.setX(addrXOld);
-        serverNameField.setY(addrYOld);
+        int addrXOld = addressField.x;
+        int addrYOld = addressField.y;
+        addressField.x = serverNameField.x;
+        addressField.y = serverNameField.y;
+        serverNameField.x = addrXOld;
+        serverNameField.y = addrYOld;
+        serverNameField.setTextFieldFocused(false);
 
         //set listeners to add suggestions if fields are empty
         addressField.setChangedListener(s -> {
