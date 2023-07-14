@@ -1,5 +1,5 @@
 # BetterAddServer
-Minecraft Fabric 1.19/1.20 mod with some small quality-of-life-enhancements for the "add server" menu.
+Minecraft Fabric 1.19/1.20 mod with some small quality-of-life-enhancements for the "Add Server" menu.
 
 
 ## Features
