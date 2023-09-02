@@ -1,52 +1,57 @@
 package net.player005.betteraddserver;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class IP2Name {
 
-    public static List<String> upperCaseWords = Arrays.asList("hd", "yt", "eu", "na", "sa", "as", "pvp", "mc");
-    public static List<String> dontIgnoreDomainEnding = Arrays.asList("Land", "Club");
+    public static List<String> alwaysUppercaseWords = Arrays.asList("hd", "yt", "eu", "na", "sa", "as", "pvp", "mc");
+    public static List<String> alwaysKeepEndings = Arrays.asList("Land", "Club");
 
-    public static String toName(String IP) {
-        String IPNoDots = IP.replace(".", "");
-        if (IPNoDots.length() < 3) {
-            return null;
-        }
+    public static @Nullable String toName(@NotNull String ip) {
+        String ipNoDots = ip.replace(".", "");
+
+        if (ipNoDots.length() < 3) return null;
 
         try {
             //if it's a numeric ip, don't change the name field
-            Integer.parseInt(IPNoDots);
+            Integer.parseInt(ipNoDots);
             return null;
-        } catch (NumberFormatException e) {
-            String[] arr = IP.split("\\.");
+        } catch (NumberFormatException ignored) {}
 
-            //capitalise every word, words present in upperCase List to complete uppercase
-            int i = 0;
-            for (String word : arr) {
+        ip = removeAfterColon(ip);
+        String[] splitIP = ip.split("\\.");
+        if (splitIP.length < 1) return null;
 
-                for (String s : upperCaseWords) {
-                    word = word.replaceAll(s, s.toUpperCase());
-                }
+        //capitalise every word, words present in upperCase List to complete uppercase
+        for (int i = 0; i < splitIP.length; i++) {
+            var word = splitIP[i];
 
-                if (word.length() < 2) {
-                    continue;
-                }
-                arr[i] = word.substring(0, 1).toUpperCase() + word.substring(1);
-                i++;
-            }
+            for (String s : alwaysUppercaseWords)
+                if (Objects.equals(word, s)) word = word.toUpperCase();
 
-            //remove domain ending if existing unless present in dontIgnoreDomainEnding
-            String[] newArr = new String[0];
-            if (arr.length > 1) {
-                newArr = Arrays.copyOf(arr, arr.length - 1);
-            }
+            if (!word.isEmpty()) word = capitalise(word);
 
-            String result = String.join(" ", newArr);
-            if (dontIgnoreDomainEnding.contains(arr[arr.length - 1])) {
-                result = result.concat(arr[arr.length - 1]);
-            }
-            return result;
+            splitIP[i] = word;
         }
+
+        splitIP[splitIP.length - 1] = (splitIP.length == 1 || alwaysKeepEndings.contains(splitIP[splitIP.length - 1])) ?
+                capitalise(splitIP[splitIP.length - 1]) : "";
+
+        return String.join(" ", splitIP);
+    }
+
+    public static @NotNull String capitalise(@NotNull String word) {
+        return word.substring(0, 1).toUpperCase() + word.substring(1);
+    }
+
+    @Contract(value = "_ -> !null", pure = true)
+    public static @NotNull String removeAfterColon(@NotNull String s) {
+        return s.split(":")[0];
     }
 }
