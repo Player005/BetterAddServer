@@ -1,6 +1,6 @@
 package net.player005.betteraddserver.mixin.screen;
 
-import net.minecraft.client.gui.screen.AddServerScreen;
+import net.minecraft.client.gui.screen.multiplayer.AddServerScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -37,36 +37,37 @@ public abstract class MixinAddServerScreen extends Screen {
 
     @Inject(method = "init", at = @At("TAIL"))
     public void init(CallbackInfo ci) {
-        //swap fields
-        int addrXOld = addressField.getX();
-        int addrYOld = addressField.getY();
-        addressField.setX(serverNameField.getX());
-        addressField.setY(serverNameField.getY());
-        serverNameField.setX(addrXOld);
-        serverNameField.setY(addrYOld);
+        swapInputFields();
 
-        //set listeners to add suggestions if fields are empty
         addressField.setChangedListener(s -> {
             serverNameField.setText("");
             serverNameField.setText(IP2Name.toName(s));
             this.updateAddButton();
             updateFieldSuggestions();
         });
-        serverNameField.setChangedListener(s -> {
-            this.updateAddButton();
-            updateFieldSuggestions();
-        });
 
-        if (addressField.getText().isEmpty()) {
-            addressField.setSuggestion("hypixel.net");
-            serverNameField.setText("");
-        }
-
-        this.setInitialFocus(addressField);
+        serverNameField.setText("");
+        updateFieldSuggestions();
     }
 
+    @Unique
+    private void swapInputFields() {
+        int addressFieldOldX = addressField.getX();
+        int addressFieldOldY = addressField.getY();
+        addressField.setX(serverNameField.getX());
+        addressField.setY(serverNameField.getY());
+        serverNameField.setX(addressFieldOldX);
+        serverNameField.setY(addressFieldOldY);
+    }
+
+    @Override
+    public void setInitialFocus() {
+        setInitialFocus(addressField);
+    }
+
+    @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_ENTER & this.addButton.active) {
+        if (keyCode == GLFW.GLFW_KEY_ENTER && this.addButton.active) {
             this.addAndClose();
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
