@@ -36,7 +36,7 @@ public abstract class MixinAddServerScreen extends Screen {
     protected abstract void updateAddButton();
 
     @Inject(method = "init", at = @At("TAIL"))
-    public void init(CallbackInfo ci) {
+    private void init(CallbackInfo ci) {
         swapInputFields();
 
         addressField.setChangedListener(s -> {
