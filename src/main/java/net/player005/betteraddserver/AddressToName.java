@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class IPToName {
+public abstract class AddressToName {
 
     private static final String[] alwaysUppercase = {"hd", "yt", "pvp", "mc"};
     private static final List<String> keepEndings = Arrays.asList("land", "club");
