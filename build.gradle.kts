@@ -1,6 +1,5 @@
 plugins {
     id("fabric-loom") version "1.6-SNAPSHOT"
-    kotlin("jvm") version "1.9.23"
     id("maven-publish")
 }
 
@@ -15,28 +14,11 @@ repositories {
 
 }
 
-//loom {
-//    splitEnvironmentSourceSets()
-//
-//    mods {
-//        create("modid") {
-//            sourceSet(sourceSets["main"])
-//            sourceSet(sourceSets["client"])
-//        }
-//    }
-//}
-
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft("com.mojang:minecraft:${project.properties["minecraft_version"]}")
     mappings("net.fabricmc:yarn:${project.properties["yarn_mappings"]}:v2")
     modImplementation("net.fabricmc:fabric-loader:${project.properties["loader_version"]}")
-
-//    modImplementation("net.fabricmc:fabric-language-kotlin:${project.properties["fabric_kotlin_version"]}")
-    // Uncomment the following line to enable the deprecated Fabric API modules.
-    // These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
-
-    // modImplementation("net.fabricmc.fabric-api:fabric-api-deprecated:${project.properties["fabric_version"]}")
 }
 
 tasks {
@@ -64,10 +46,6 @@ tasks {
             rename { "${it}_${base.archivesName.get()}" }
         }
     }
-}
-
-kotlin {
-    jvmToolchain(java.targetCompatibility.majorVersion.toInt())
 }
 
 // configure the maven publication
