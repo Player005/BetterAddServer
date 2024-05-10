@@ -1,6 +1,6 @@
 package net.player005.betteraddserver.mixin.screen;
 
-import net.minecraft.client.gui.screen.multiplayer.AddServerScreen;
+import net.minecraft.client.gui.screen.AddServerScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -62,11 +62,6 @@ public abstract class MixinAddServerScreen extends Screen {
         addressField.setY(serverNameField.getY());
         serverNameField.setX(addressFieldOldX);
         serverNameField.setY(addressFieldOldY);
-    }
-
-    @Override
-    public void setInitialFocus() {
-        setInitialFocus(addressField);
     }
 
     @Override
