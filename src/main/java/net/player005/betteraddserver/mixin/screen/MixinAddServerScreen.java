@@ -44,6 +44,7 @@ public abstract class MixinAddServerScreen extends Screen {
         if (addressField.getText().isEmpty())
             serverNameField.setText("");
         updateSuggestions();
+        setInitialFocus(addressField);
     }
 
     @Unique
