@@ -5,7 +5,6 @@ import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.option.ServerList;
 import net.minecraft.text.Text;
-import net.player005.betteraddserver.IP2Name;
 import net.player005.betteraddserver.IPToName;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,7 +31,7 @@ public abstract class MixinMultiplayerScreen extends Screen {
             ServerInfo serverInfo = serverList.get(i);
             if (Objects.equals(serverInfo.name, "Minecraft Server")) {
                 var name = IPToName.toName(serverInfo.address);
-                if (name == null) continue;
+                if (name.isEmpty()) continue;
                 serverInfo.name = name;
                 changedSomething = true;
             }

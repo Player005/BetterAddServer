@@ -5,7 +5,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
-import net.player005.betteraddserver.IP2Name;
 import net.player005.betteraddserver.IPToName;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
@@ -40,15 +39,19 @@ public abstract class MixinAddServerScreen extends Screen {
     private void init(CallbackInfo ci) {
         swapInputFields();
 
-        addressField.setChangedListener(s -> {
-            serverNameField.setText("");
-            serverNameField.setText(IPToName.toName(s));
-            this.updateAddButton();
-            updateFieldSuggestions();
-        });
+        addressField.setChangedListener(this::onAddressFieldChange);
 
-        serverNameField.setText("");
-        updateFieldSuggestions();
+        if (addressField.getText().isEmpty())
+            serverNameField.setText("");
+        updateSuggestions();
+    }
+
+    @Unique
+    private void onAddressFieldChange(String s) {
+        var generatedName = IPToName.toName(s);
+        if (!generatedName.isEmpty()) serverNameField.setText(generatedName);
+        this.updateAddButton();
+        updateSuggestions();
     }
 
     @Unique
@@ -75,7 +78,7 @@ public abstract class MixinAddServerScreen extends Screen {
     }
 
     @Unique
-    private void updateFieldSuggestions() {
+    private void updateSuggestions() {
         if (serverNameField.getText().isEmpty() & addressField.getText().isEmpty()) {
             serverNameField.setSuggestion("Hypixel");
             addressField.setSuggestion("hypixel.net");

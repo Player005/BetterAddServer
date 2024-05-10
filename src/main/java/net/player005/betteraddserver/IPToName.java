@@ -13,12 +13,12 @@ public abstract class IPToName {
     private static final List<String> keepEndings = Arrays.asList("land", "club");
 
     @Contract(pure = true)
-    public static @Nullable String toName(@NotNull String ip) {
-        if (ip.length() < 3) return null;
+    public static @NotNull String toName(@NotNull String ip) {
+        if (ip.length() < 3) return "";
 
         var splitAddress = ip.split("\\.");
 
-        if (splitAddress.length < 1) return null;
+        if (splitAddress.length < 1) return "";
         if (!keepEndings.contains(splitAddress[splitAddress.length - 1]))
             splitAddress = Arrays.copyOf(splitAddress, splitAddress.length - 1);
 
@@ -41,7 +41,7 @@ public abstract class IPToName {
             result.append(capitalise(element)).append(" ");
         }
 
-        return result.toString();
+        return result.toString().trim();
     }
 
     @Contract(pure = true)
