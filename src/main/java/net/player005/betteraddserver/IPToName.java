@@ -2,7 +2,6 @@ package net.player005.betteraddserver;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +34,6 @@ public abstract class IPToName {
                     var sb = new StringBuilder(element);
                     sb.replace(index, index + upper.length(), upper.toUpperCase());
                     var nextCharIndex = index + upper.length();
-                    System.out.println(nextCharIndex);
                     if (element.length() > nextCharIndex)
                         sb.replace(nextCharIndex, nextCharIndex + 1, element.substring(nextCharIndex, nextCharIndex + 1).toUpperCase());
                     element = sb.toString();
