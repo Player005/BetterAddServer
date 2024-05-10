@@ -19,7 +19,7 @@ public abstract class IPToName {
         var splitAddress = ip.split("\\.");
 
         if (splitAddress.length < 1) return "";
-        if (!keepEndings.contains(splitAddress[splitAddress.length - 1]))
+        if (!keepEndings.contains(splitAddress[splitAddress.length - 1]) && splitAddress.length > 1)
             splitAddress = Arrays.copyOf(splitAddress, splitAddress.length - 1);
 
         final var result = new StringBuilder();
@@ -34,7 +34,10 @@ public abstract class IPToName {
                 if (index != -1) {
                     var sb = new StringBuilder(element);
                     sb.replace(index, index + upper.length(), upper.toUpperCase());
-                    sb.replace(index + 1, index + 1, element.substring(index + 1, index + 1).toUpperCase());
+                    var nextCharIndex = index + upper.length();
+                    System.out.println(nextCharIndex);
+                    if (element.length() > nextCharIndex)
+                        sb.replace(nextCharIndex, nextCharIndex + 1, element.substring(nextCharIndex, nextCharIndex + 1).toUpperCase());
                     element = sb.toString();
                 }
             }
