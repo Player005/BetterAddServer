@@ -13,13 +13,19 @@ public abstract class AddressToName {
 
     @Contract(pure = true)
     public static @NotNull String toName(@NotNull String ip) {
-        if (ip.length() < 3) return "";
+        if (ip.replace(".", "").length() < 3) return "";
 
         var splitAddress = ip.split("\\.");
 
+        var startsWithPlay = splitAddress[0].equalsIgnoreCase("play");
+        if (startsWithPlay) splitAddress = Arrays.copyOfRange(splitAddress, 1, splitAddress.length);
+
         if (splitAddress.length < 1) return "";
-        if (!keepEndings.contains(splitAddress[splitAddress.length - 1]) && splitAddress.length > 1)
-            splitAddress = Arrays.copyOf(splitAddress, splitAddress.length - 1);
+
+        var removeEnding = !keepEndings.contains(splitAddress[splitAddress.length - 1].toLowerCase()) && splitAddress.length > 1;
+        if (removeEnding) splitAddress = Arrays.copyOf(splitAddress, splitAddress.length - 1);
+
+        if (splitAddress.length < 1) return "";
 
         final var result = new StringBuilder();
 
