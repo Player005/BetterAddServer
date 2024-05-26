@@ -15,6 +15,7 @@ repositories {
 }
 
 dependencies {
+    testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
     // To change the versions see the gradle.properties file
     minecraft("com.mojang:minecraft:${project.properties["minecraft_version"]}")
     mappings("net.fabricmc:yarn:${project.properties["yarn_mappings"]}:v2")
@@ -28,6 +29,10 @@ tasks {
         filesMatching("fabric.mod.json") {
             expand("version" to project.version)
         }
+    }
+
+    test {
+        useJUnitPlatform()
     }
 
     withType<JavaCompile> {
