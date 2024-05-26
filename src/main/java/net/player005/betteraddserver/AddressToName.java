@@ -9,7 +9,7 @@ import java.util.List;
 public abstract class AddressToName {
 
     private static final String[] alwaysUppercase = {"hd", "yt", "pvp", "mc"};
-    private static final List<String> keepEndings = Arrays.asList("land", "club");
+    private static final List<String> keepEndings = Arrays.asList("land", "club", "network");
 
     @Contract(pure = true)
     public static @NotNull String toName(@NotNull String ip) {
@@ -17,8 +17,8 @@ public abstract class AddressToName {
 
         var splitAddress = ip.split("\\.");
 
-        var startsWithPlay = splitAddress[0].equalsIgnoreCase("play");
-        if (startsWithPlay) splitAddress = Arrays.copyOfRange(splitAddress, 1, splitAddress.length);
+        var ignoreFirstSub = splitAddress[0].equalsIgnoreCase("play") || splitAddress[0].equalsIgnoreCase("mc");
+        if (ignoreFirstSub) splitAddress = Arrays.copyOfRange(splitAddress, 1, splitAddress.length);
 
         if (splitAddress.length < 1) return "";
 
