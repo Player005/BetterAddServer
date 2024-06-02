@@ -39,10 +39,10 @@ public abstract class MixinAddServerScreen extends Screen {
 
 
     @Unique
-    private String lastGeneratedName;
+    private String lastGeneratedName = "";
 
     @Unique
-    public boolean wasNameCustomised;
+    public boolean wasNameCustomised = false;
 
     @Inject(method = "init", at = @At("TAIL"))
     private void init(CallbackInfo ci) {
