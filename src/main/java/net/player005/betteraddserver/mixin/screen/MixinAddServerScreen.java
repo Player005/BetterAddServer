@@ -15,6 +15,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Objects;
+
 @Mixin(AddServerScreen.class)
 public abstract class MixinAddServerScreen extends Screen {
 
@@ -35,6 +37,13 @@ public abstract class MixinAddServerScreen extends Screen {
     @Shadow
     protected abstract void updateAddButton();
 
+
+    @Unique
+    private String lastGeneratedName;
+
+    @Unique
+    public boolean wasNameCustomised;
+
     @Inject(method = "init", at = @At("TAIL"))
     private void init(CallbackInfo ci) {
         swapInputFields();
@@ -43,10 +52,12 @@ public abstract class MixinAddServerScreen extends Screen {
         serverNameField.setChangedListener(s -> {
             updateAddButton();
             updateSuggestions();
+            wasNameCustomised = !Objects.equals(s, lastGeneratedName);
         });
 
         if (addressField.getText().isEmpty())
             serverNameField.setText("");
+        lastGeneratedName = AddressToName.toName(addressField.getText());
         updateSuggestions();
         setInitialFocus(addressField);
     }
@@ -54,7 +65,8 @@ public abstract class MixinAddServerScreen extends Screen {
     @Unique
     private void onAddressFieldChange(String s) {
         var generatedName = AddressToName.toName(s);
-        if (!generatedName.isEmpty()) serverNameField.setText(generatedName);
+        lastGeneratedName = generatedName;
+        if (!generatedName.isEmpty() && !wasNameCustomised) serverNameField.setText(generatedName);
         this.updateAddButton();
         updateSuggestions();
     }
