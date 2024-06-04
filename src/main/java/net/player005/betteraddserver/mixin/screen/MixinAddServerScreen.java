@@ -57,7 +57,10 @@ public abstract class MixinAddServerScreen extends Screen {
 
         if (addressField.getText().isEmpty())
             serverNameField.setText("");
+
         lastGeneratedName = AddressToName.toName(addressField.getText());
+        wasNameCustomised = !Objects.equals(serverNameField.getText(), lastGeneratedName);
+
         updateSuggestions();
     }
 
