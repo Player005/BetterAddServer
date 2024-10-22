@@ -6,9 +6,9 @@ plugins {
 java.sourceCompatibility = JavaVersion.VERSION_21
 java.targetCompatibility = JavaVersion.VERSION_21
 
-base.archivesName.set(project.properties["archives_base_name"] as String)
-version = project.properties["mod_version"] as String
-group = project.properties["maven_group"] as String
+version = properties["mod_version"] as String
+group = properties["maven_group"] as String
+base.archivesName = "BetterAddServer-${properties["minecraft_version"]}-fabric"
 
 repositories {
 
@@ -43,15 +43,23 @@ tasks {
     }
 
     java {
-        // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-        // if it is present.
-        // If you remove this line, sources will not be generated.
         withSourcesJar()
     }
 
     jar {
         from("LICENSE") {
             rename { "${it}_${base.archivesName.get()}" }
+        }
+    }
+}
+
+loom {
+    runs {
+        named("client") {
+            client()
+            configName = "Fabric Client"
+            ideConfigGenerated(true)
+            runDir("run")
         }
     }
 }

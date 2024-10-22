@@ -5,21 +5,18 @@ plugins {
     id("net.neoforged.moddev") version "2.0.42-beta"
 }
 
-val mod_version = properties["mod_version"] as String
+val mod_version = rootProject.properties["mod_version"] as String
 val mod_group_id = properties["mod_group_id"] as String
 val mod_id = properties["mod_id"] as String
 val neo_version = properties["neo_version"] as String
 
 version = mod_version
 group = mod_group_id
+base.archivesName = "BetterAddServer-${properties["minecraft_version"]}-neoforge"
 
 
 repositories {
     mavenLocal()
-}
-
-base {
-    archivesName = mod_id + "_neoforge"
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)

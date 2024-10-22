@@ -7,10 +7,16 @@ showAsResourcePack = false
 modId="betteraddserver"
 version="${version}"
 displayName="Better \"Add Server\""
-description="Small quality-of-life-enhancements for the \"Add Server\" menu "
+description="Small quality-of-life-enhancements for the \"Add Server\" menu"
 authors="Player005"
 logoFile = "assets/betteraddserver/icon.png"
 logoBlur = false
 
 [[mixins]]
 config="betteraddserver.mixins.json"
+
+[[dependencies.betteraddserver]]
+modId = "minecraft"
+type = "required"
+side = "CLIENT"
+versionRange = "[1.20.5,)"
