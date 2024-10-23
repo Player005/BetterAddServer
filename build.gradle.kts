@@ -18,7 +18,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
     // To change the versions see the gradle.properties file
     minecraft("com.mojang:minecraft:${project.properties["minecraft_version"]}")
-    mappings("net.fabricmc:yarn:${project.properties["yarn_mappings"]}:v2")
+    mappings(loom.officialMojangMappings())
     modImplementation("net.fabricmc:fabric-loader:${project.properties["loader_version"]}")
 }
 
@@ -62,4 +62,7 @@ loom {
             runDir("run")
         }
     }
+
+    @Suppress("UnstableApiUsage")
+    mixin { defaultRefmapName.set("betteraddserver-fabric.refmap.json") }
 }

@@ -6,7 +6,7 @@
   "mixins": [
   ],
   "client": [
-    "screen.MixinAddServerScreen",
+    "screen.MixinEditServerScreen",
     "screen.MixinMultiplayerScreen"
   ],
   "injectors": {
