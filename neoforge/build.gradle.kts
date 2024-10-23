@@ -33,20 +33,34 @@ neoForge {
 
     mods {
         create(mod_id) {
-            sourceSet(sourceSets.main.get())
+            sourceSet(rootProject.sourceSets.main.get())
         }
     }
 }
 
 dependencies {
-    implementation(rootProject.sourceSets.main.get().allSource)
+    compileOnly(rootProject.sourceSets.main.get().output)
 }
 
-tasks.jar {
-    dependsOn(rootProject.tasks.named("processResources"))
-    destinationDirectory = rootDir.toPath().resolve("build").resolve("libs_forge").toFile()
-    from(rootProject.sourceSets.main.get().output.classesDirs)
-    from(rootProject.sourceSets.main.get().output.resourcesDir!!) {
-        exclude("fabric.mod.json")
+tasks {
+    // NeoGradle compiles the game, but we don't want to add our common code to the game's code
+    val notNeoTask: (Task) -> Boolean =
+        { !it.name.startsWith("neo") && !it.name.startsWith("compileService") }
+
+    withType<JavaCompile>().matching(notNeoTask).configureEach {
+        source(rootProject.sourceSets.main.get().allSource)
+    }
+
+    named("compileTestJava").configure {
+        enabled = false
+    }
+
+    jar {
+        dependsOn(rootProject.tasks.named("processResources"))
+        destinationDirectory = rootDir.toPath().resolve("build").resolve("libs_forge").toFile()
+        //from(rootProject.sourceSets.main.get().output.classesDirs)
+        from(rootProject.sourceSets.main.get().output.resourcesDir!!) {
+            exclude("fabric.mod.json")
+        }
     }
 }
