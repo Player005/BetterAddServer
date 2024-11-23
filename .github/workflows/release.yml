@@ -23,7 +23,7 @@ jobs:
         run: ./gradlew build
 
       - name: Upload artifacts to Modrinth and GitHub
-        uses: Kir-Antipov/mc-publish@v3.3
+        uses: Kir-Antipov/mc-publish@v3.3.0
         with:
           #modrinth-id: s4DtR8IM
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
