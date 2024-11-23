@@ -25,7 +25,7 @@ jobs:
       - name: Upload artifacts to Modrinth and GitHub
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          modrinth-id: s4DtR8IM
+          #modrinth-id: s4DtR8IM
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           modrinth-featured: true
           modrinth-unfeature-mode: subset
