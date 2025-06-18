@@ -8,4 +8,5 @@ pluginManagement {
     }
 }
 
+rootProject.name = "BetterAddServer"
 include("neoforge")

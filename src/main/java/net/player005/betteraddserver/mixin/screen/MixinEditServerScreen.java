@@ -1,16 +1,13 @@
 package net.player005.betteraddserver.mixin.screen;
 
-import net.minecraft.client.gui.screens.EditServerScreen;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.EditServerScreen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.player005.betteraddserver.AddressToName;
 import org.lwjgl.glfw.GLFW;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -38,6 +35,12 @@ public abstract class MixinEditServerScreen extends Screen {
     @Shadow
     protected abstract void updateAddButtonStatus();
 
+    @Shadow
+    @Final
+    private static Component NAME_LABEL;
+    @Shadow
+    @Final
+    private static Component IP_LABEL;
 
     @Unique
     private String lastGeneratedName = "";
@@ -76,11 +79,8 @@ public abstract class MixinEditServerScreen extends Screen {
 
     @Unique
     private void swapInputFields() {
-        int addressFieldOldX = ipEdit.getX();
         int addressFieldOldY = ipEdit.getY();
-        ipEdit.setX(nameEdit.getX());
         ipEdit.setY(nameEdit.getY());
-        nameEdit.setX(addressFieldOldX);
         nameEdit.setY(addressFieldOldY);
     }
 
@@ -103,19 +103,22 @@ public abstract class MixinEditServerScreen extends Screen {
 
     @Unique
     private void updateSuggestions() {
-        if (nameEdit.getValue().isEmpty() && ipEdit.getValue().isEmpty()) {
+        if (nameEdit.getValue().isEmpty())
             nameEdit.setSuggestion("Hypixel");
-            ipEdit.setSuggestion("hypixel.net");
-        } else {
+        else
             nameEdit.setSuggestion("");
+
+        if (ipEdit.getValue().isEmpty())
+            ipEdit.setSuggestion("hypixel.net");
+        else
             ipEdit.setSuggestion("");
-        }
     }
 
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)I"), index = 3)
-    private int injectedY(int Y) {
-        if (Y <= 53) return 94;
-        else return 53;
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;" +
+        "drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"), index = 1)
+    private Component switchLabels(Component component) {
+        if (component == NAME_LABEL) return IP_LABEL;
+        if (component == IP_LABEL) return NAME_LABEL;
+        return component;
     }
-
 }

@@ -1,5 +1,5 @@
 plugins {
-    id("fabric-loom") version "1.6-SNAPSHOT"
+    id("fabric-loom") version "1.10-SNAPSHOT"
     id("maven-publish")
 }
 
@@ -9,10 +9,6 @@ java.targetCompatibility = JavaVersion.VERSION_21
 version = properties["mod_version"] as String
 group = properties["maven_group"] as String
 base.archivesName = "BetterAddServer-${properties["minecraft_version"]}-fabric"
-
-repositories {
-
-}
 
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
