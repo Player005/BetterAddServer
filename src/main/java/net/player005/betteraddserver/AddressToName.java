@@ -9,7 +9,7 @@ import java.util.List;
 public abstract class AddressToName {
 
     private static final String[] alwaysUppercase = {"hd", "yt", "pvp", "mc"};
-    private static final List<String> keepEndings = Arrays.asList("land", "club", "network");
+    private static final List<String> keepEndings = Arrays.asList("land", "club", "network", "world");
 
     @Contract(pure = true)
     public static @NotNull String toName(@NotNull String ip) {
