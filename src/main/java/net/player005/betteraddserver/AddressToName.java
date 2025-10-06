@@ -22,6 +22,9 @@ public abstract class AddressToName {
 
         if (splitAddress.length < 1) return "";
 
+        var lunarName = LunarClientServerMappings.getServerName(String.join(".", splitAddress));
+        if (lunarName != null) return lunarName;
+
         var removeEnding = !keepEndings.contains(splitAddress[splitAddress.length - 1].toLowerCase()) && splitAddress.length > 1;
         if (removeEnding) splitAddress = Arrays.copyOf(splitAddress, splitAddress.length - 1);
 
