@@ -2,8 +2,9 @@ package net.player005.betteraddserver.mixin.screen;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.EditServerScreen;
+import net.minecraft.client.gui.screens.ManageServerScreen;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import net.player005.betteraddserver.AddressToName;
 import org.lwjgl.glfw.GLFW;
@@ -15,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Objects;
 
-@Mixin(EditServerScreen.class)
+@Mixin(ManageServerScreen.class)
 public abstract class MixinEditServerScreen extends Screen {
 
     @Shadow
@@ -42,6 +43,7 @@ public abstract class MixinEditServerScreen extends Screen {
     @Final
     private static Component IP_LABEL;
 
+
     @Unique
     private String lastGeneratedName = "";
 
@@ -53,6 +55,8 @@ public abstract class MixinEditServerScreen extends Screen {
         swapInputFields();
 
         ipEdit.setResponder(this::onAddressFieldChange);
+        nameEdit.setHint(Component.empty());
+
         nameEdit.setResponder(s -> {
             updateAddButtonStatus();
             updateSuggestions();
@@ -94,11 +98,11 @@ public abstract class MixinEditServerScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_ENTER && this.addButton.active) {
+    public boolean keyPressed(KeyEvent event) {
+        if (event.key() == GLFW.GLFW_KEY_ENTER && this.addButton.active) {
             this.onAdd();
         }
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(event);
     }
 
     @Unique
