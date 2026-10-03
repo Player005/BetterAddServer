@@ -59,6 +59,7 @@ public abstract class MixinManageServerScreen extends Screen {
             updateSuggestions();
             wasNameCustomised = !Objects.equals(s, lastGeneratedName);
         });
+        nameEdit.setHint(Component.empty());
 
         if (ipEdit.getValue().isEmpty())
             nameEdit.setValue("");
