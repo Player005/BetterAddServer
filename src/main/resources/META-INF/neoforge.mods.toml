@@ -18,10 +18,10 @@ config="betteraddserver.mixins.json"
 modId = "minecraft"
 type = "required"
 side = "CLIENT"
-versionRange = "[26.3,)"
+versionRange = "[26.1.2,26.3)"
 
 [[dependencies.betteraddserver]]
 modId = "neoforge"
 type = "required"
 side = "CLIENT"
-versionRange = "[26.3.0.22-beta,)"
+versionRange = "[26.1.2,26.3)"
