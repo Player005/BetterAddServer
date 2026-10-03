@@ -7,7 +7,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import net.player005.betteraddserver.AddressToName;
-import org.lwjgl.sdl.SDLKeycode;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -96,10 +95,9 @@ public abstract class MixinManageServerScreen extends Screen {
 
     @Override
     public boolean keyPressed(KeyEvent event) {
-        // MC 26.x: input runs on SDL (LWJGL 3.4 dropped GLFW).
-        // event.keycode() is the SDL key code (SDLK_RETURN = Enter, SDLK_KP_ENTER = numpad Enter).
-        int kc = event.keycode();
-        if ((kc == SDLKeycode.SDLK_RETURN || kc == SDLKeycode.SDLK_KP_ENTER) && this.addButton.active) {
+        // Vanilla's own Enter check (InputWithModifiers#isConfirmation):
+        // SDL codes (257/335) on 26.1/26.2, GLFW codes (40/88) on 26.3.
+        if (event.isConfirmation() && this.addButton.active) {
             this.onAdd();
         }
         return super.keyPressed(event);

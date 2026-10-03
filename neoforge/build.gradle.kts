@@ -2,7 +2,7 @@ plugins {
     id("java-library")
     id("idea")
     id("maven-publish")
-    id("net.neoforged.moddev") version "2.0.147"
+    id("net.neoforged.moddev") version "2.0.141"
 }
 
 val mod_version = rootProject.properties["mod_version"] as String
