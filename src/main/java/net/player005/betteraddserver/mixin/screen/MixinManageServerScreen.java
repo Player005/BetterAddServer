@@ -2,11 +2,12 @@ package net.player005.betteraddserver.mixin.screen;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.EditServerScreen;
+import net.minecraft.client.gui.screens.ManageServerScreen;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import net.player005.betteraddserver.AddressToName;
-import org.lwjgl.glfw.GLFW;
+import org.lwjgl.sdl.SDLKeycode;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,8 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Objects;
 
-@Mixin(EditServerScreen.class)
-public abstract class MixinEditServerScreen extends Screen {
+@Mixin(ManageServerScreen.class)
+public abstract class MixinManageServerScreen extends Screen {
 
     @Shadow
     private EditBox nameEdit;
@@ -25,7 +26,7 @@ public abstract class MixinEditServerScreen extends Screen {
     @Shadow
     private Button addButton;
 
-    protected MixinEditServerScreen(Component title) {
+    protected MixinManageServerScreen(Component title) {
         super(title);
     }
 
@@ -89,16 +90,19 @@ public abstract class MixinEditServerScreen extends Screen {
      * @reason initial focus should always be the ip field
      */
     @Overwrite
-    public void setInitialFocus() {
+    protected void setInitialFocus() {
         setInitialFocus(ipEdit);
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_ENTER && this.addButton.active) {
+    public boolean keyPressed(KeyEvent event) {
+        // MC 26.x: input runs on SDL (LWJGL 3.4 dropped GLFW).
+        // event.keycode() is the SDL key code (SDLK_RETURN = Enter, SDLK_KP_ENTER = numpad Enter).
+        int kc = event.keycode();
+        if ((kc == SDLKeycode.SDLK_RETURN || kc == SDLKeycode.SDLK_KP_ENTER) && this.addButton.active) {
             this.onAdd();
         }
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(event);
     }
 
     @Unique
@@ -114,8 +118,8 @@ public abstract class MixinEditServerScreen extends Screen {
             ipEdit.setSuggestion("");
     }
 
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;" +
-        "drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"), index = 1)
+    @ModifyArg(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;" +
+        "text(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"), index = 1)
     private Component switchLabels(Component component) {
         if (component == NAME_LABEL) return IP_LABEL;
         if (component == IP_LABEL) return NAME_LABEL;

@@ -1,10 +1,11 @@
 plugins {
-    id("fabric-loom") version "1.10-SNAPSHOT"
+    id("fabric-loom") version "1.17.21"
     id("maven-publish")
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_21
-java.targetCompatibility = JavaVersion.VERSION_21
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(25)
+}
 
 version = properties["mod_version"] as String
 group = properties["maven_group"] as String
@@ -12,10 +13,10 @@ base.archivesName = "BetterAddServer-${properties["minecraft_version"]}-fabric"
 
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     // To change the versions see the gradle.properties file
     minecraft("com.mojang:minecraft:${project.properties["minecraft_version"]}")
-    mappings(loom.officialMojangMappings())
-    modImplementation("net.fabricmc:fabric-loader:${project.properties["loader_version"]}")
+    implementation("net.fabricmc:fabric-loader:${project.properties["loader_version"]}")
 }
 
 tasks {
@@ -35,7 +36,7 @@ tasks {
     }
 
     withType<JavaCompile> {
-        options.release.set(java.targetCompatibility.majorVersion.toInt())
+        options.release.set(25)
     }
 
     java {

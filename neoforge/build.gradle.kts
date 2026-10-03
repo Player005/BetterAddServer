@@ -2,7 +2,7 @@ plugins {
     id("java-library")
     id("idea")
     id("maven-publish")
-    id("net.neoforged.moddev") version "2.0.42-beta"
+    id("net.neoforged.moddev") version "2.0.147"
 }
 
 val mod_version = rootProject.properties["mod_version"] as String
@@ -19,7 +19,7 @@ repositories {
     mavenLocal()
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
 neoForge {
     // Specify the version of NeoForge to use.

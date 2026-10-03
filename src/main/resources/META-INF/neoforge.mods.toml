@@ -1,4 +1,4 @@
-modLoader="lowcodefml"
+modLoader="javafml"
 loaderVersion="[1,)"
 license="LGPL 3.0 or later"
 showAsResourcePack = false
@@ -9,8 +9,7 @@ version="${version}"
 displayName="Better \"Add Server\""
 description="Small quality-of-life-enhancements for the \"Add Server\" menu"
 authors="Player005"
-logoFile = "assets/betteraddserver/icon.png"
-logoBlur = false
+iconFile = "assets/betteraddserver/icon.png"
 
 [[mixins]]
 config="betteraddserver.mixins.json"
@@ -19,4 +18,10 @@ config="betteraddserver.mixins.json"
 modId = "minecraft"
 type = "required"
 side = "CLIENT"
-versionRange = "[1.20.5,)"
+versionRange = "[26.3,)"
+
+[[dependencies.betteraddserver]]
+modId = "neoforge"
+type = "required"
+side = "CLIENT"
+versionRange = "[26.3.0.22-beta,)"
