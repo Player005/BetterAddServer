@@ -9,8 +9,7 @@ version="${version}"
 displayName="Better \"Add Server\""
 description="Small quality-of-life-enhancements for the \"Add Server\" menu"
 authors="Player005"
-logoFile = "assets/betteraddserver/icon.png"
-logoBlur = false
+iconFile = "assets/betteraddserver/icon.png"
 
 [[mixins]]
 config="betteraddserver.mixins.json"
