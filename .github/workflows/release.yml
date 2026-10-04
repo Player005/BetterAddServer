@@ -43,6 +43,7 @@ jobs:
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
           files: build/libs/!(*-@(dev|sources|all)).jar
+          game-versions: ">=26.1"
 
           version-type: release
           loaders: fabric quilt
@@ -60,7 +61,7 @@ jobs:
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
           files: build/libs_forge/!(*-@(dev|sources|all)).jar
-          game-versions: ">=1.20"
+          game-versions: ">=26.1"
 
           version-type: release
           loaders: neoforge
