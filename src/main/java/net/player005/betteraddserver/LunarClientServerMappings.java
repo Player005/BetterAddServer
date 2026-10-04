@@ -24,7 +24,8 @@ public class LunarClientServerMappings {
 
     private static final Map<String, String> ADDRESS_TO_NAME = new ConcurrentHashMap<>();
 
-    static {
+    public static void init() {
+        if (!ADDRESS_TO_NAME.isEmpty()) return;
         CompletableFuture.runAsync(() -> {
             try {
                 HttpRequest request = HttpRequest.newBuilder(URI.create(MAPPINGS_URL)).GET().build();
